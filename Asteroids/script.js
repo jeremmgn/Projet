@@ -7,8 +7,6 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-ctx.fillStyle = 'black';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 class Vaisseau {
     constructor(x, y, taille) {
@@ -16,6 +14,7 @@ class Vaisseau {
         this.y = y;
         this.taille = taille;
         this.angle = 90 / 180 * Math.PI;
+        this.rotation = 0;
     }
 
     draw() {
@@ -37,15 +36,42 @@ class Vaisseau {
         ctx.closePath();
         ctx.stroke();
     }
+
+    update() {
+        this.angle += this.rotation;
+    }
 }
 
 const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 12);
+
+document.addEventListener('keydown', function(event) {
+    switch (event.keyCode) {
+        case 37:
+            vaisseau.rotation = - 0.1;
+            break
+        case 39:
+            vaisseau.rotation = 0.1;
+            break
+    }
+});
+
+document.addEventListener('keyup', function(event) {
+    switch (event.keyCode) {
+        case 37:
+            vaisseau.rotation = 0;
+            break
+        case 39:
+            vaisseau.rotation = 0;
+            break
+    }
+});
 
 function jeu() {
     requestAnimationFrame(jeu);
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     vaisseau.draw();
+    vaisseau.update();
 }
 
 jeu();
