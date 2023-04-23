@@ -15,6 +15,13 @@ class Vaisseau {
         this.taille = taille;
         this.angle = 90 / 180 * Math.PI;
         this.rotation = 0;
+        this.propulsion = false;
+        this.acceleration = 0.2;
+        this.vitesse = {
+            x: 0,
+            y: 0
+        };
+        this.friction = 0.99;
     }
 
     draw() {
@@ -39,15 +46,26 @@ class Vaisseau {
 
     update() {
         this.angle += this.rotation;
+        if (this.propulsion) {
+            this.vitesse.x += this.acceleration * Math.cos(this.angle);
+            this.vitesse.y -= this.acceleration * Math.sin(this.angle);
+        }
+        this.vitesse.x *= this.friction;
+        this.vitesse.y *= this.friction;
+        this.x += this.vitesse.x;
+        this.y += this.vitesse.y;
     }
 }
 
-const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 12);
+const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 16);
 
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
         case 37:
             vaisseau.rotation = - 0.1;
+            break
+        case 38:
+            vaisseau.propulsion = true;
             break
         case 39:
             vaisseau.rotation = 0.1;
@@ -59,6 +77,9 @@ document.addEventListener('keyup', function(event) {
     switch (event.keyCode) {
         case 37:
             vaisseau.rotation = 0;
+            break
+        case 38:
+            vaisseau.propulsion = false;
             break
         case 39:
             vaisseau.rotation = 0;
