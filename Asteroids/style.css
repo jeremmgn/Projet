@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Meteoric';
+    src: url("fonts/meteoric.otf") format("opentype"),
+    url("fonts/meteoric-bold.otf") format("opentype"),
+    url("fonts/meteoric-light.otf") format("opentype")
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
