@@ -69,7 +69,83 @@ class Vaisseau {
     }
 }
 
+class Asteroide {
+    constructor(x, y, taille, vitesse) {
+        this.x = x;
+        this.y = y;
+        this.taille = taille;
+        this.vitesse = vitesse;
+    }
+
+    draw() {
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let i = 0; i < 5; i++) {
+            const angle = (Math.PI * 2) / 5;
+            const x = this.x + this.taille * Math.cos(i * angle);
+            const y = this.y + this.taille * Math.sin(i * angle);
+            ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+    }
+
+    update() {
+        this.x += this.vitesse.x;
+        this.y += this.vitesse.y;
+
+        if (this.x + this.taille < 0) {
+            this.x = canvas.width + this.taille;
+        } else if (this.x - this.taille > canvas.width) {
+            this.x = -this.taille;
+        }
+
+        if (this.y + this.taille < 0) {
+            this.y = canvas.height + this.taille;
+        } else if (this.y - this.taille > canvas.height) {
+            this.y = -this.taille;
+        }
+    }
+}
+
 const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 16);
+
+const asteroides = [];
+
+for (let i = 0; i < 6; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const taille = 36;
+    const vitesse = {
+        x: (Math.random() - 0.5) * 8,
+        y: (Math.random() - 0.5) * 8
+    };
+    asteroides.push(new Asteroide(x, y, taille, vitesse));
+}
+
+for (let i = 0; i < 4; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const taille = 72;
+    const vitesse = {
+        x: (Math.random() - 0.5) * 4,
+        y: (Math.random() - 0.5) * 4
+    };
+    asteroides.push(new Asteroide(x, y, taille, vitesse));
+}
+
+for (let i = 0; i < 2; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const taille = 18;
+    const vitesse = {
+        x: (Math.random() - 0.5) * 12,
+        y: (Math.random() - 0.5) * 12
+    };
+    asteroides.push(new Asteroide(x, y, taille, vitesse));
+}
+
 
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
@@ -105,6 +181,10 @@ function jeu() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     vaisseau.draw();
     vaisseau.update();
+    asteroides.forEach(asteroide => {
+        asteroide.draw();
+        asteroide.update();
+    });
 }
 
 jeu();
