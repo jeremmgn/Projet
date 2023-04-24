@@ -54,6 +54,18 @@ class Vaisseau {
         this.vitesse.y *= this.friction;
         this.x += this.vitesse.x;
         this.y += this.vitesse.y;
+        if (this.x < -this.taille) {
+            this.x = canvas.width + this.taille;
+        }
+        if (this.x > canvas.width + this.taille) {
+            this.x = -this.taille;
+        }
+        if (this.y < -this.taille) {
+            this.y = canvas.height + this.taille;
+        }
+        if (this.y > canvas.height + this.taille) {
+            this.y = -this.taille;
+        }
     }
 }
 
