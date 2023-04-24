@@ -22,6 +22,7 @@ class Vaisseau {
             y: 0
         };
         this.friction = 0.99;
+        this.collision = false;
     }
 
     draw() {
@@ -107,6 +108,11 @@ class Asteroide {
             this.y = -this.taille;
         }
     }
+
+    collision(vaisseau) {
+        const distance = Math.sqrt((this.x - vaisseau.x) ** 2 + (this.y - vaisseau.y) ** 2);
+        return distance < this.taille + vaisseau.taille;
+    }
 }
 
 const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 16);
@@ -146,7 +152,6 @@ for (let i = 0; i < 2; i++) {
     asteroides.push(new Asteroide(x, y, taille, vitesse));
 }
 
-
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
         case 37:
@@ -184,6 +189,9 @@ function jeu() {
     asteroides.forEach(asteroide => {
         asteroide.draw();
         asteroide.update();
+        if (asteroide.collision(vaisseau)) {
+            vaisseau.collision = true;
+        }
     });
 }
 
