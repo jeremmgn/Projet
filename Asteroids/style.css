@@ -19,6 +19,15 @@ body {
     height: 100vh;
 }
 
+#score {
+    padding: 12px 24px;
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    color: #E5E4DF;
+    z-index: 2;
+}
+
 #menu {
     position: absolute;
     width: 100%;

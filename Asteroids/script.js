@@ -17,7 +17,9 @@ class Vaisseau {
             y: 0
         };
         this.friction = 0.99;
+        this.invincible = true;
         this.collision = false;
+        this.score = 0;
     }
 
     draw() {
@@ -114,7 +116,7 @@ const vaisseau = new Vaisseau(canvas.width / 2, canvas.height / 2, 16);
 
 const asteroides = [];
 
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < 8; i++) {
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
     const taille = 36;
@@ -125,7 +127,7 @@ for (let i = 0; i < 6; i++) {
     asteroides.push(new Asteroide(x, y, taille, vitesse));
 }
 
-for (let i = 0; i < 4; i++) {
+for (let i = 0; i < 6; i++) {
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
     const taille = 72;
@@ -136,7 +138,7 @@ for (let i = 0; i < 4; i++) {
     asteroides.push(new Asteroide(x, y, taille, vitesse));
 }
 
-for (let i = 0; i < 2; i++) {
+for (let i = 0; i < 4; i++) {
     const x = Math.random() * canvas.width;
     const y = Math.random() * canvas.height;
     const taille = 18;
@@ -199,9 +201,16 @@ document.addEventListener('keyup', function(event) {
 
 const jouer = document.getElementById('btn-jouer');
 const menu = document.getElementById('menu');
+const score = document.getElementById('score');
+
 jouer.addEventListener('click', () => {
     jeu();
     menu.style.display = 'none';
+    if (vaisseau.invincible) {
+        setInterval(() => {
+            vaisseau.invincible = false;
+        }, 3000);
+    }
 });
 
 ctx.fillStyle = 'black';
@@ -218,8 +227,13 @@ function jeu() {
     asteroides.forEach(asteroide => {
         asteroide.draw();
         asteroide.update();
-        if (asteroide.collision(vaisseau)) {
+        if (!vaisseau.invincible && asteroide.collision(vaisseau)) {
             vaisseau.collision = true;
+            cancelAnimationFrame(jeu);
         }
     });
+    if (!vaisseau.collision) {
+        vaisseau.score++;
+    }
+    score.innerHTML = 'SCORE: ' + vaisseau.score;
 }
