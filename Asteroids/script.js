@@ -202,10 +202,31 @@ document.addEventListener('keyup', function(event) {
 const jouer = document.getElementById('btn-jouer');
 const menu = document.getElementById('menu');
 const score = document.getElementById('score');
+const gameover = document.getElementById('game-over');
+const scorefinal = document.getElementById('score-final');
+const affichage = document.getElementById('affichage');
+const btnaffichage = document.getElementById('btn-affichage');
+const rejouer = document.getElementById('btn-rejouer');
 
 jouer.addEventListener('click', () => {
     jeu();
     menu.style.display = 'none';
+    if (vaisseau.invincible) {
+        setInterval(() => {
+            vaisseau.invincible = false;
+        }, 3000);
+    }
+});
+
+rejouer.addEventListener('click', () => {
+    vaisseau.taille = 16;
+    vaisseau.x = canvas.width / 2;
+    vaisseau.y = canvas.height / 2;
+    vaisseau.invincible = true;
+    vaisseau.collision = false;
+    vaisseau.score = 0;
+    score.style.display = 'flex';
+    affichage.style.display = 'none';
     if (vaisseau.invincible) {
         setInterval(() => {
             vaisseau.invincible = false;
@@ -229,7 +250,14 @@ function jeu() {
         asteroide.update();
         if (!vaisseau.invincible && asteroide.collision(vaisseau)) {
             vaisseau.collision = true;
-            cancelAnimationFrame(jeu);
+            if (vaisseau.collision) {
+                vaisseau.taille = 0;
+                affichage.style.display = 'flex';
+                gameover.style.display = 'flex';
+                scorefinal.innerHTML = 'SCORE: ' + vaisseau.score;
+                btnaffichage.style.display = 'flex';
+                score.style.display = 'none';
+            }
         }
     });
     if (!vaisseau.collision) {
