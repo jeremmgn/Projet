@@ -21,7 +21,7 @@ class Vaisseau {
     }
 
     draw() {
-        ctx.strokeStyle = 'white';
+        ctx.strokeStyle = '#4b80ca';
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(
@@ -74,7 +74,7 @@ class Asteroide {
     }
 
     draw() {
-        ctx.strokeStyle = 'white';
+        ctx.strokeStyle = '#b45252';
         ctx.lineWidth = 2;
         ctx.beginPath();
         for (let i = 0; i < 5; i++) {
@@ -147,6 +147,28 @@ for (let i = 0; i < 2; i++) {
     asteroides.push(new Asteroide(x, y, taille, vitesse));
 }
 
+const etoiles = [];
+
+function dessinerEtoiles(x, y, taille) {
+    ctx.beginPath();
+    ctx.arc(x, y, taille, 0, 2 * Math.PI);
+    ctx.fill();
+}
+
+for (let i = 0; i < 100; i++) {
+    const x = Math.random() * canvas.width;
+    const y = Math.random() * canvas.height;
+    const taille = Math.random();
+    etoiles.push({ x, y, taille });
+}
+
+function fond() {
+    for (const etoile of etoiles) {
+        ctx.fillStyle = "#E5E4DF";
+        dessinerEtoiles(etoile.x, etoile.y, etoile.taille);
+    }
+}
+
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
         case 37:
@@ -175,10 +197,22 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
+const jouer = document.getElementById('btn-jouer');
+const menu = document.getElementById('menu');
+jouer.addEventListener('click', () => {
+    jeu();
+    menu.style.display = 'none';
+});
+
+ctx.fillStyle = 'black';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+fond();
+
 function jeu() {
     requestAnimationFrame(jeu);
     ctx.fillStyle = 'black';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+    fond();
     vaisseau.draw();
     vaisseau.update();
     asteroides.forEach(asteroide => {
@@ -189,5 +223,3 @@ function jeu() {
         }
     });
 }
-
-jeu();
