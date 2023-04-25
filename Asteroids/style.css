@@ -55,17 +55,52 @@ body {
     gap: 24px;
 }
 
+#btn-affichage {
+    display: none;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 96px;
+}
+
 button {
     font-size: 48px;
     font-weight: bold;
     color: #E5E4DF;
     border: none;
     background-color: transparent;
-    cursor: pointer;}
+    cursor: pointer;
+}
 
 #canvas {
     position: absolute;
+    z-index: -1;
+}
+
+#affichage {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 96px;
     z-index: 1;
+}
+
+#game-over {
+    display: none;
+    font-size: 128px;
+    font-weight: bold;
+    color: #E5E4DF;
+}
+
+#score-final {
+    font-size: 48px;
+    font-weight: bold;
+    color: #E5E4DF;
 }
 
 @keyframes fadeIn {
@@ -79,21 +114,21 @@ button {
     }
 }
 
-#menu {
+#menu, #affichage {
     animation: fadeIn 1s ease-out;
 }
 
-#titre, #btn {
+#titre, #btn, #game-over, #score-final, #btn-affichage {
     opacity: 0;
     transform: translateY(-50px);
     animation: fadeIn 1s ease-out forwards;
     animation-delay: 0.5s;
 }
 
-#titre {
+#titre, #game-over {
     animation-delay: 1s;
 }
 
-#btn {
+#btn, #score-final, #btn-affichage {
     animation-delay: 1.5s;
 }
